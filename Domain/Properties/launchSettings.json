@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Domain": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\sniko\\Desktop\\prazan_projekat\\Application\\Program.cs"
+    }
+  }
+}
