@@ -18,8 +18,4 @@
     <None Remove="Services\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Enumeracije\" />
-  </ItemGroup>
-
 </Project>
