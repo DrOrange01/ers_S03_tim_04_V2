@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Enumeracije
 {
-    internal enum TipGeneratora
+    public enum TipGeneratora
     {
         SolarPanel,
         WindGenerator,
