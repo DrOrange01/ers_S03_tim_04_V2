@@ -10,5 +10,12 @@ namespace Services.HydroGeneratorServisi
     public class HydroelectricPowerPlant
     {
         public double trenutnaProizvodnja { get; set; } = 0;
+
+        public HydroelectricPowerPlant() { }
+
+        public HydroelectricPowerPlant(double proizvodnja)
+        {
+            trenutnaProizvodnja = proizvodnja;
+        }
     }
 }

@@ -8,6 +8,6 @@ namespace Domain.Servisi
 {
     public interface IPowerGeneratorServis
     {
-        public double VratiPotraznju(double potraznja);
+        public bool PostaviProizvodnju(double potraznja);
     }
 }
