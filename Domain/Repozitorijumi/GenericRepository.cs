@@ -13,8 +13,12 @@ namespace Services.RepozitorijumServisi
 
         public T GetById(Guid id)
         {
-            // Pretpostavlja se da entitet ima svojstvo "Id" tipa Guid
-            return _entities.FirstOrDefault(e => (Guid)e.GetType().GetProperty("Id")?.GetValue(e) == id);
+            var entity = _entities.FirstOrDefault(e => e.Id == id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"Entity with ID {id} not found.");
+            }
+            return entity;
         }
 
         public List<T> GetAll() => _entities;

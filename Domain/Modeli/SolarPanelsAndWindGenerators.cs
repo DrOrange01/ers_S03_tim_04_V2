@@ -11,19 +11,17 @@ namespace Services.SolarWindServisi
     public class SolarPanelsAndWindGenerators
     {
         public TipGeneratora tipGeneratora { get; set; }
-        public double snagaVetra {  get; set; }
-        public double snagaSunca {  get; set; }
+        public double snaga {  get; set; }
         public double trenutnaProizvodnja { get; set; } = 0;
 
         public SolarPanelsAndWindGenerators()
         {
         }
 
-        public SolarPanelsAndWindGenerators(TipGeneratora tip, double snagaV, double snagaS, double trenutnaPr)
+        public SolarPanelsAndWindGenerators(TipGeneratora tip, double _snaga, double trenutnaPr)
         {
             tipGeneratora = tip;
-            snagaVetra = snagaV;
-            snagaSunca = snagaS;
+            snaga = _snaga;
             trenutnaProizvodnja = trenutnaPr;
         }
     }
