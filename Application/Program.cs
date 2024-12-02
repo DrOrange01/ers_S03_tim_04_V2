@@ -8,6 +8,7 @@ namespace Application
     {
         static void Main(string[] args)
         {
+            //var consumer = new Consumer();
             IRepository<Consumer> userRepository = new GenericRepository<Consumer>();
             IRepository<Uredjaji> deviceRepository = new GenericRepository<Uredjaji>();
 
@@ -17,10 +18,10 @@ namespace Application
             do
             {
                 Console.Write($"Unesite ime korisnika: ");
-                name = Console.ReadLine();
-            } while( name == "" );
+                name = Console.ReadLine() ?? "";
+            } while (string.IsNullOrWhiteSpace(name));
             
-            var korisnik = new Consumer( 1, name, 0);
+            var korisnik = new Consumer( Guid.NewGuid(), name, 0);
 
             userRepository.Add( korisnik );
             //opcija add uredjaj
@@ -28,9 +29,9 @@ namespace Application
             do
             {
                 Console.Write($"Unesite naziv uredjaja: ");
-                uredjaj = Console.ReadLine();
-            } while (uredjaj == "");
-            korisnik.uredjaji.Add(new Uredjaji(1, uredjaj, 5));
+                uredjaj = Console.ReadLine() ?? "";
+            } while (string.IsNullOrWhiteSpace(uredjaj));
+            korisnik.uredjaji.Add(new Uredjaji(Guid.NewGuid(), uredjaj, 5));
 
             //opcija prikazi uredjaje za korisnika
             Console.WriteLine($"User: {korisnik.Name}");
@@ -38,7 +39,7 @@ namespace Application
             {
                 Console.WriteLine($" - Device: {uredjajj.Naziv}, In Use: {uredjajj.Ukljucen}");
             }
-            //}
+            
         }
     }
 }

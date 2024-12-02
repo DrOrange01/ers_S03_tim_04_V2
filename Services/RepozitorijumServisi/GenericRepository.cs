@@ -7,35 +7,48 @@ using System.Threading.Tasks;
 
 namespace Services.RepozitorijumServisi
 {
-    public class GenericRepository<T> : IRepository<T> where T : class
+    public class GenericRepository<T> : IRepository<T> where T : class, IAggregateRoot
     {
         private readonly List<T> _entities = new();
 
-        public T GetById(int id)
+        public T GetById(Guid id)
         {
-            // Pretpostavlja se da entitet ima svojstvo Id
-            return _entities.FirstOrDefault(e => (int)e.GetType().GetProperty("Id").GetValue(e) == id);
+            // Pretpostavlja se da entitet ima svojstvo "Id" tipa Guid
+            return _entities.FirstOrDefault(e => (Guid)e.GetType().GetProperty("Id")?.GetValue(e) == id);
         }
 
         public List<T> GetAll() => _entities;
 
-        public void Add(T entity) => _entities.Add(entity);
+        public void Add(T entity)
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _entities.Add(entity);
+        }
 
         public void Update(T entity)
         {
-            var id = (int)entity.GetType().GetProperty("Id").GetValue(entity);
-            var existing = GetById(id);
-            if (existing != null)
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            var id = (Guid)entity.GetType().GetProperty("Id")?.GetValue(entity);
+            var existingEntity = GetById(id);
+
+            if (existingEntity != null)
             {
-                _entities.Remove(existing);
+                _entities.Remove(existingEntity);
                 _entities.Add(entity);
             }
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var entity = GetById(id);
-            if (entity != null) _entities.Remove(entity);
+            if (entity != null)
+            {
+                _entities.Remove(entity);
+            }
         }
     }
 }

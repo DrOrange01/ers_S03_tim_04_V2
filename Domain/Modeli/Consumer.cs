@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Repozitorijumi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Modeli
 {
-    public class Consumer
+    public class Consumer : IAggregateRoot
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Name { get; set; } = "";
         public List<Uredjaji> uredjaji {  get; set; } = new List<Uredjaji>();
         public double UkupnaPotrosnja { get; set; } = 0;
 
@@ -18,7 +19,7 @@ namespace Domain.Modeli
 
         }
 
-        public Consumer(int id, string name, double ukupnaPotrosnja)
+        public Consumer(Guid id, string name, double ukupnaPotrosnja)
         {
             Id = id;
             Name = name;
