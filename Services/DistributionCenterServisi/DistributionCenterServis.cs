@@ -18,7 +18,7 @@ namespace Services.DistributionCenterServisi
 
         public DistributionCenterServis()
         {
-            hydroServis = new HydroelectricPowerPlantServis();
+            hydroServis = new HydroelectricPowerPlantServis(1.1);
             obnovljiviIzvori = new List<SolarPanelsAndWindGeneratorsServis>
             {
                 new SolarPanelsAndWindGeneratorsServis(TipGeneratora.SolarPanel),
@@ -30,7 +30,7 @@ namespace Services.DistributionCenterServisi
             // Ažuriraj proizvodnju za sve obnovljive izvore
             foreach (var izvor in obnovljiviIzvori)
             {
-                izvor.PostaviProizvodnju(potraznja);
+                //izvor.PostaviProizvodnju(potraznja);
             }
         }
         public double PosaljiZahtev(double potrosnja, Consumer consumer)

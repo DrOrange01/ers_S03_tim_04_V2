@@ -16,15 +16,9 @@ namespace Services.SolarWindServisi
         {
             Random rnd = new Random();
             double snaga = rnd.NextDouble();
-            generator = new SolarPanelsAndWindGenerators(tip, snaga, 0);
+            generator = new SolarPanelsAndWindGenerators(tip, snaga, snaga * 5);
         }
-        public bool PostaviProizvodnju(double potraznja)
-        {
-            if(potraznja<0) return false;
 
-            generator.trenutnaProizvodnja = generator.snaga * 5;
-            return true;
-        }
         public double GetProizvodnja() => generator.trenutnaProizvodnja;
     }
 }

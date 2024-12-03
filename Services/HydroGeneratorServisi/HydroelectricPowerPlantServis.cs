@@ -11,16 +11,13 @@ namespace Services.HydroGeneratorServisi
     {
         private HydroelectricPowerPlant hydro;
 
-        public HydroelectricPowerPlantServis()
+        public HydroelectricPowerPlantServis(double potraznja)
         {
-            hydro = new HydroelectricPowerPlant(0);
-        }
-        public bool PostaviProizvodnju(double potraznja)
-        {
-            if (potraznja < 0) return false;
-
-            hydro.trenutnaProizvodnja = potraznja;
-            return true;
+            if (potraznja > 0)
+            {
+                hydro = new HydroelectricPowerPlant(0);
+                hydro.trenutnaProizvodnja = potraznja;
+            }
         }
 
         public double GetProizvodnja() => hydro.trenutnaProizvodnja;
