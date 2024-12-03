@@ -13,6 +13,7 @@ namespace Application
             IRepository<Uredjaji> deviceRepository = new GenericRepository<Uredjaji>();
 
             //ovo ce biti prebaceno u prezentaciju{
+
             //opcija add consumer
             string name;
             do
@@ -22,16 +23,25 @@ namespace Application
             } while (string.IsNullOrWhiteSpace(name));
             
             var korisnik = new Consumer( Guid.NewGuid(), name, 0);
-
             userRepository.Add( korisnik );
-            //opcija add uredjaj
+
+            //opcija add uredjaj, moguce dodavanje vise uredjaja
             string uredjaj;
             do
             {
-                Console.Write($"Unesite naziv uredjaja: ");
-                uredjaj = Console.ReadLine() ?? "";
-            } while (string.IsNullOrWhiteSpace(uredjaj));
-            korisnik.uredjaji.Add(new Uredjaji(Guid.NewGuid(), uredjaj, 5));
+                Console.WriteLine("Unesite naziv uredjaja (Enter za kraj unosa):");
+                uredjaj = Console.ReadLine()?.Trim();
+
+                if (!string.IsNullOrWhiteSpace(uredjaj))
+                {
+                    korisnik.uredjaji.Add(new Uredjaji(Guid.NewGuid(), uredjaj, 5));
+                    Console.WriteLine($"Uredjaj '{uredjaj}' uspesno dodat.");
+                }
+
+            } while (!string.IsNullOrWhiteSpace(uredjaj));
+
+            Console.WriteLine("Unos uređaja zavrsen.");
+
 
             //opcija prikazi uredjaje za korisnika
             Console.WriteLine($"User: {korisnik.Name}");
