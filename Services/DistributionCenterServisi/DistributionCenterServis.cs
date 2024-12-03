@@ -13,29 +13,31 @@ namespace Services.DistributionCenterServisi
 {
     public class DistributionCenterServis : IDistributionCenterServis
     {
-        private readonly HydroelectricPowerPlantServis hydroServis;
+        private HydroelectricPowerPlantServis hydroServis;
         private readonly List<SolarPanelsAndWindGeneratorsServis> obnovljiviIzvori;
 
         public DistributionCenterServis()
         {
-            hydroServis = new HydroelectricPowerPlantServis(1.1);
+            
             obnovljiviIzvori = new List<SolarPanelsAndWindGeneratorsServis>
             {
                 new SolarPanelsAndWindGeneratorsServis(TipGeneratora.SolarPanel),
                 new SolarPanelsAndWindGeneratorsServis(TipGeneratora.WindGenerator)
             };
         }
-        public void AžurirajProizvodnju(double potraznja)
-        {
-            // Ažuriraj proizvodnju za sve obnovljive izvore
-            foreach (var izvor in obnovljiviIzvori)
-            {
-                //izvor.PostaviProizvodnju(potraznja);
-            }
-        }
         public double PosaljiZahtev(double potrosnja, Consumer consumer)
         {
-            return potrosnja;
+            double obnovljivaProizvodnjaUkupno = 0;
+            double hydroProizvodnja = 0;
+            double cena = 0;
+            foreach (var izvor in obnovljiviIzvori)
+            {
+                obnovljivaProizvodnjaUkupno += izvor.GetProizvodnja();
+            }
+            hydroProizvodnja = potrosnja - obnovljivaProizvodnjaUkupno;
+            hydroServis = new HydroelectricPowerPlantServis(hydroProizvodnja);
+            cena = obnovljivaProizvodnjaUkupno * 5 + hydroProizvodnja * 10;
+            return cena;
         }
     }
 }
