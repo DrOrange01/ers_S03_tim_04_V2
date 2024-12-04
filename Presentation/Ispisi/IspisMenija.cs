@@ -1,5 +1,7 @@
 ﻿using Domain.Modeli;
 using Presentation.Ispisi;
+using Services.DistributionCenterServisi;
+using Services.UredjajServisi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,9 @@ namespace Presentation.Meni
     public class IspisMenija
     {
         private readonly Consumer _consumer;
+        DistributionCenterServis _distributionCenter = new DistributionCenterServis();
+        UkljuciUredjajServis _ukljuciUredjaj = new UkljuciUredjajServis();
+        IskljuciUredjajServis _iskljuciUredjaj = new IskljuciUredjajServis();
 
         public IspisMenija(Consumer consumer)
         {
@@ -21,7 +26,7 @@ namespace Presentation.Meni
             bool kraj = false;
             while(!kraj)
             {
-                Console.WriteLine("\n - 1. Prikazi uredjaje\n - 2. Ukljuci uredjaj\n - 3. Dodaj uredjaj\n - 4. Obrisi uredjaj\n - 5. Obrisi korisnika\n - 6. Odjavi se");
+                Console.WriteLine("\n - 1. Prikazi uredjaje\n - 2. Ukljuci/iskljuci uredjaj\n - 3. Dodaj uredjaj\n - 4. Obrisi uredjaj\n - 5. Obrisi korisnika\n - 6. Odjavi se");
                 Console.Write("Opcija: ");
                 string? opcija = Console.ReadLine();
 
@@ -36,7 +41,32 @@ namespace Presentation.Meni
                         ispis.PrikaziUredjaje();
                         break;
                     case '2':
-                        //Ukljuci uredjaj
+                        Console.WriteLine("Izaberite uredjaj koji zelite da ukljucite/iskljucite: ");
+                        string? ukljucenUredjaj = Console.ReadLine();
+                        foreach (var uredjajj in _consumer.uredjaji)
+                        {
+                            if(uredjajj.Naziv.ToLower().Equals(ukljucenUredjaj.ToLower()))
+                            {
+                                if (!uredjajj.Ukljucen)
+                                {
+                                    bool da = _ukljuciUredjaj.UkljuciUredjaj(uredjajj);
+                                    if(da)
+                                    {
+                                        _consumer.UkupnaPotrosnja += uredjajj.Potrosnja;
+                                    }
+                                }
+                                else
+                                {
+                                    bool ne = _iskljuciUredjaj.IskljuciUredjaj(uredjajj);
+                                    if(ne)
+                                    {
+                                        _consumer.UkupnaPotrosnja -= uredjajj.Potrosnja;
+                                    }
+                                }
+                            }
+                        }
+                        double cena = _distributionCenter.PosaljiZahtev(_consumer.UkupnaPotrosnja, _consumer);
+                        Console.WriteLine($"Vasa potrosnja je: {_consumer.UkupnaPotrosnja}, i to ce vas kostati: {cena}");
                         break;
                     case '3':
                         string uredjaj;
