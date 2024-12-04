@@ -1,5 +1,7 @@
 ﻿using Domain.Modeli;
 using Domain.Repozitorijumi;
+using Presentation.Ispisi;
+using Presentation.Meni;
 using Services.RepozitorijumServisi;
 
 namespace Application
@@ -26,29 +28,12 @@ namespace Application
             userRepository.Add( korisnik );
 
             //opcija add uredjaj, moguce dodavanje vise uredjaja
-            string uredjaj;
-            do
-            {
-                Console.WriteLine("Unesite naziv uredjaja (Enter za kraj unosa):");
-                uredjaj = Console.ReadLine()?.Trim();
 
-                if (!string.IsNullOrWhiteSpace(uredjaj))
-                {
-                    korisnik.uredjaji.Add(new Uredjaji(Guid.NewGuid(), uredjaj, 5));
-                    Console.WriteLine($"Uredjaj '{uredjaj}' uspesno dodat.");
-                }
-
-            } while (!string.IsNullOrWhiteSpace(uredjaj));
-
-            Console.WriteLine("Unos uređaja zavrsen.");
 
 
             //opcija prikazi uredjaje za korisnika
-            Console.WriteLine($"User: {korisnik.Name}");
-            foreach (var uredjajj in korisnik.uredjaji)
-            {
-                Console.WriteLine($" - Device: {uredjajj.Naziv}, In Use: {uredjajj.Ukljucen}");
-            }
+            IspisMenija meni = new IspisMenija(korisnik);
+            meni.PrikaziMeni();
             
         }
     }
