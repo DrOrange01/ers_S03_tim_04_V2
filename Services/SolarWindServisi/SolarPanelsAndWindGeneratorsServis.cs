@@ -11,14 +11,21 @@ namespace Services.SolarWindServisi
 {
     public class SolarPanelsAndWindGeneratorsServis : IPowerGeneratorServis
     {
-        SolarPanelsAndWindGenerators generator;
-        public SolarPanelsAndWindGeneratorsServis(TipGeneratora tip)
+        private readonly SolarPanelsAndWindGenerators _generator;
+        private readonly ISnagaServis _snagaServis;
+        public SolarPanelsAndWindGeneratorsServis(TipGeneratora tip, ISnagaServis snagaServis)
         {
-            Random rnd = new Random();
-            double snaga = rnd.NextDouble();
-            generator = new SolarPanelsAndWindGenerators(tip, snaga, snaga * 5);
+            _snagaServis = snagaServis ?? throw new ArgumentNullException(nameof(snagaServis));
+            _generator = new SolarPanelsAndWindGenerators(tip, 0, 0);
+
+            _snagaServis.PromeniSnagu(_generator);
         }
 
-        public double GetProizvodnja() => generator.trenutnaProizvodnja;
+        public double GetProizvodnja() => _generator.trenutnaProizvodnja;
+
+        public void AzurirajProizvodnju()
+        {
+            _snagaServis.PromeniSnagu(_generator);
+        }
     }
 }

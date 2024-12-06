@@ -13,16 +13,17 @@ namespace Services.DistributionCenterServisi
 {
     public class DistributionCenterServis : IDistributionCenterServis
     {
-        private HydroelectricPowerPlantServis hydroServis;
+        private HydroelectricPowerPlantServis? hydroServis;
         private readonly List<SolarPanelsAndWindGeneratorsServis> obnovljiviIzvori;
+        ObnovljiviIzvoriServis snagaServis = new ObnovljiviIzvoriServis();
 
         public DistributionCenterServis()
         {
             
             obnovljiviIzvori = new List<SolarPanelsAndWindGeneratorsServis>
             {
-                new SolarPanelsAndWindGeneratorsServis(TipGeneratora.SolarPanel),
-                new SolarPanelsAndWindGeneratorsServis(TipGeneratora.WindGenerator)
+                new SolarPanelsAndWindGeneratorsServis(TipGeneratora.SolarPanel, snagaServis),
+                new SolarPanelsAndWindGeneratorsServis(TipGeneratora.WindGenerator, snagaServis)
             };
         }
         public double PosaljiZahtev(double potrosnja, Consumer consumer)

@@ -1,8 +1,10 @@
 ﻿using Domain.Modeli;
 using Domain.Repozitorijumi;
 using Presentation.Ispisi;
+using Presentation.Izbor;
 using Presentation.Meni;
 using Services.RepozitorijumServisi;
+using System.Timers;
 
 namespace Application
 {
@@ -23,8 +25,18 @@ namespace Application
                 Console.Write($"Unesite ime korisnika: ");
                 name = Console.ReadLine() ?? "";
             } while (string.IsNullOrWhiteSpace(name));
-            
-            var korisnik = new Consumer( Guid.NewGuid(), name, 0);
+
+            IzborKorisnika izbor = new IzborKorisnika();
+            Consumer korisnik;
+            int provera = izbor.ProveriKorisnika(name);
+            if (provera != -1)
+            {
+                korisnik = izbor._consumers[provera];
+            }
+            else
+            {
+                korisnik = new Consumer(Guid.NewGuid(), name, 0);
+            }
             userRepository.Add( korisnik );
 
             //opcija add uredjaj, moguce dodavanje vise uredjaja
