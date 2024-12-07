@@ -13,7 +13,7 @@ namespace Application
         static void Main(string[] args)
         {
             //var consumer = new Consumer();
-            IRepository<Consumer> userRepository = new GenericRepository<Consumer>();
+            GenericRepository<Consumer> userRepository = new GenericRepository<Consumer>();
             IRepository<Uredjaji> deviceRepository = new GenericRepository<Uredjaji>();
 
             //ovo ce biti prebaceno u prezentaciju{
@@ -26,7 +26,7 @@ namespace Application
                 name = Console.ReadLine() ?? "";
             } while (string.IsNullOrWhiteSpace(name));
 
-            IzborKorisnika izbor = new IzborKorisnika();
+            IzborKorisnika izbor = new IzborKorisnika(userRepository);
             Consumer korisnik;
             int provera = izbor.ProveriKorisnika(name);
             if (provera != -1)
@@ -44,7 +44,7 @@ namespace Application
 
 
             //opcija prikazi uredjaje za korisnika
-            IspisMenija meni = new IspisMenija(korisnik);
+            IspisMenija meni = new IspisMenija(korisnik, userRepository);
             meni.PrikaziMeni();
             
         }

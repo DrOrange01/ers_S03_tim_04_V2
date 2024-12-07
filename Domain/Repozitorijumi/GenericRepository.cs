@@ -33,11 +33,7 @@ namespace Services.RepozitorijumServisi
 
         public void Update(T entity)
         {
-            if (entity == null)
-                throw new ArgumentNullException(nameof(entity));
-
-            var id = (Guid)entity.GetType().GetProperty("Id")?.GetValue(entity);
-            var existingEntity = GetById(id);
+            var existingEntity = GetById(entity.Id);
 
             if (existingEntity != null)
             {

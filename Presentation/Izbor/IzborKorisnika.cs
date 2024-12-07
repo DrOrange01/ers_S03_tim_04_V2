@@ -12,10 +12,11 @@ namespace Presentation.Izbor
     public class IzborKorisnika
     {
         public List<Consumer> _consumers;
-        IRepository<Consumer> userRepository = new GenericRepository<Consumer>();
+        IRepository<Consumer> userRepository;
 
-        public IzborKorisnika()
+        public IzborKorisnika(GenericRepository<Consumer> _userRepository)
         {
+            userRepository = _userRepository;
             _consumers =
                 [
                     new(Guid.NewGuid(),"Nikola",0),

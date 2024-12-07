@@ -1,6 +1,8 @@
 ﻿using Domain.Modeli;
+using Domain.Repozitorijumi;
 using Presentation.Ispisi;
 using Services.DistributionCenterServisi;
+using Services.RepozitorijumServisi;
 using Services.UredjajServisi;
 using System;
 using System.Collections.Generic;
@@ -16,17 +18,21 @@ namespace Presentation.Meni
         DistributionCenterServis _distributionCenter = new DistributionCenterServis();
         UkljuciUredjajServis _ukljuciUredjaj = new UkljuciUredjajServis();
         IskljuciUredjajServis _iskljuciUredjaj = new IskljuciUredjajServis();
+        ObrisiUredjajServis _obrisiUredjaj = new ObrisiUredjajServis();
+        IRepository<Consumer> _userRepository;
 
-        public IspisMenija(Consumer consumer)
+        public IspisMenija(Consumer consumer, GenericRepository<Consumer> userRepository)
         {
             _consumer = consumer;
+            _userRepository = userRepository;
         }
         public void PrikaziMeni()
         {
+            IspisUredjaja ispis = new IspisUredjaja(_consumer); ;
             bool kraj = false;
             while(!kraj)
             {
-                Console.WriteLine("\n - 1. Prikazi uredjaje\n - 2. Ukljuci/iskljuci uredjaj\n - 3. Dodaj uredjaj\n - 4. Obrisi uredjaj\n - 5. Obrisi korisnika\n - 6. Odjavi se");
+                Console.WriteLine("\n 1. Prikazi uredjaje\n 2. Ukljuci/iskljuci uredjaj\n 3. Dodaj uredjaj\n 4. Obrisi uredjaj\n 5. Obrisi korisnika\n 6. Odjavi se");
                 Console.Write("Opcija: ");
                 string? opcija = Console.ReadLine();
 
@@ -37,36 +43,35 @@ namespace Presentation.Meni
                 {
                     case '1':
                         Console.WriteLine($"User: {_consumer.Name}");
-                        IspisUredjaja ispis = new IspisUredjaja(_consumer);
                         ispis.PrikaziUredjaje();
                         break;
                     case '2':
                         Console.WriteLine("Izaberite uredjaj koji zelite da ukljucite/iskljucite: ");
-                        string? ukljucenUredjaj = Console.ReadLine();
+                        string ukljucenUredjaj = Console.ReadLine() ?? "";
                         foreach (var uredjajj in _consumer.uredjaji)
                         {
                             if(uredjajj.Naziv.ToLower().Equals(ukljucenUredjaj.ToLower()))
                             {
                                 if (!uredjajj.Ukljucen)
                                 {
-                                    bool da = _ukljuciUredjaj.UkljuciUredjaj(uredjajj);
-                                    if(da)
+                                    if(_ukljuciUredjaj.UkljuciUredjaj(uredjajj))
                                     {
                                         _consumer.UkupnaPotrosnja += uredjajj.Potrosnja;
                                     }
                                 }
                                 else
                                 {
-                                    bool ne = _iskljuciUredjaj.IskljuciUredjaj(uredjajj);
-                                    if(ne)
+                                    if(_iskljuciUredjaj.IskljuciUredjaj(uredjajj))
                                     {
                                         _consumer.UkupnaPotrosnja -= uredjajj.Potrosnja;
                                     }
                                 }
+                                double cena = _distributionCenter.PosaljiZahtev(_consumer.UkupnaPotrosnja, _consumer);
+                                Console.WriteLine($"Vasa potrosnja je: {_consumer.UkupnaPotrosnja}, i to ce vas kostati: {cena}");
+                                break;
                             }
                         }
-                        double cena = _distributionCenter.PosaljiZahtev(_consumer.UkupnaPotrosnja, _consumer);
-                        Console.WriteLine($"Vasa potrosnja je: {_consumer.UkupnaPotrosnja}, i to ce vas kostati: {cena}");
+                        Console.WriteLine($"Uredjaj {ukljucenUredjaj} ne postoji");
                         break;
                     case '3':
                         string uredjaj;
@@ -85,12 +90,20 @@ namespace Presentation.Meni
                         Console.WriteLine("Unos uređaja zavrsen.");
                         break;
                     case '4':
-                        //obrisi uredjaj
+                        Console.WriteLine("Izaberite uredjaj koji zelite da izbrisete: ");
+                        string naziv = Console.ReadLine() ?? "";
+                        if(_obrisiUredjaj.ObrisiUredjaj(_consumer, naziv))
+                        {
+                            Console.WriteLine($"Uredjaj {naziv} je uspesno obrisan");
+                        }
                         break;
                     case '5':
-                        //obrisi korisnika
+                        _userRepository.Delete(_consumer.Id);
+                        Console.WriteLine("Uspesno ste izbrisali svoj nalog!");
+                        kraj = true;
                         break;
                     case '6':
+                        Console.WriteLine("Uspesno ste se odjavili!");
                         kraj = true;
                         break;
                     default:
