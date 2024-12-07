@@ -1,7 +1,9 @@
 ﻿using Domain.Modeli;
 using Domain.Repozitorijumi;
+using Domain.Servisi;
 using Presentation.Ispisi;
 using Services.DistributionCenterServisi;
+using Services.LoggerServisi;
 using Services.RepozitorijumServisi;
 using Services.UredjajServisi;
 using System;
@@ -19,6 +21,7 @@ namespace Presentation.Meni
         UkljuciUredjajServis _ukljuciUredjaj = new UkljuciUredjajServis();
         IskljuciUredjajServis _iskljuciUredjaj = new IskljuciUredjajServis();
         ObrisiUredjajServis _obrisiUredjaj = new ObrisiUredjajServis();
+        ILogServis _logger = new FileLoggerServis("KorisnikLog.txt");
         IRepository<Consumer> _userRepository;
 
         public IspisMenija(Consumer consumer, GenericRepository<Consumer> userRepository)
@@ -68,6 +71,8 @@ namespace Presentation.Meni
                                 }
                                 double cena = _distributionCenter.PosaljiZahtev(_consumer.UkupnaPotrosnja, _consumer);
                                 Console.WriteLine($"Vasa potrosnja je: {_consumer.UkupnaPotrosnja}, i to ce vas kostati: {cena}");
+                                PorukaUDatoteci poruka = new UredjajPoruka(DateTime.Now, uredjajj.Naziv,_consumer.Name, uredjajj.Ukljucen);
+                                _logger.Loguj(poruka.ToString());
                                 break;
                             }
                         }

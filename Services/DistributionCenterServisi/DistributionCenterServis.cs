@@ -9,6 +9,7 @@ using Domain.Servisi;
 using Services.HydroGeneratorServisi;
 using Services.SolarWindServisi;
 using System.Timers;
+using Services.LoggerServisi;
 
 namespace Services.DistributionCenterServisi
 {
@@ -17,6 +18,7 @@ namespace Services.DistributionCenterServisi
         private HydroelectricPowerPlantServis? hydroServis;
         private readonly List<SolarPanelsAndWindGeneratorsServis> obnovljiviIzvori;
         ObnovljiviIzvoriServis snagaServis = new ObnovljiviIzvoriServis();
+        ILogServis _logger = new FileLoggerServis("DistributionCenterLog.txt");
         TimerServis _timerServis;
 
         public DistributionCenterServis()
@@ -41,6 +43,8 @@ namespace Services.DistributionCenterServisi
             hydroProizvodnja = potrosnja - obnovljivaProizvodnjaUkupno;
             hydroServis = new HydroelectricPowerPlantServis(hydroProizvodnja);
             cena = obnovljivaProizvodnjaUkupno * 5 + hydroProizvodnja * 10;
+            PorukaUDatoteci poruka = new EnergijaPoruka(DateTime.Now, potrosnja, hydroProizvodnja);
+            _logger.Loguj(poruka.ToString());
             return cena;
         }
     }
