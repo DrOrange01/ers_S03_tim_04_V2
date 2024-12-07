@@ -8,6 +8,7 @@ using Domain.Modeli;
 using Domain.Servisi;
 using Services.HydroGeneratorServisi;
 using Services.SolarWindServisi;
+using System.Timers;
 
 namespace Services.DistributionCenterServisi
 {
@@ -16,6 +17,7 @@ namespace Services.DistributionCenterServisi
         private HydroelectricPowerPlantServis? hydroServis;
         private readonly List<SolarPanelsAndWindGeneratorsServis> obnovljiviIzvori;
         ObnovljiviIzvoriServis snagaServis = new ObnovljiviIzvoriServis();
+        TimerServis _timerServis;
 
         public DistributionCenterServis()
         {
@@ -25,6 +27,7 @@ namespace Services.DistributionCenterServisi
                 new SolarPanelsAndWindGeneratorsServis(TipGeneratora.SolarPanel, snagaServis),
                 new SolarPanelsAndWindGeneratorsServis(TipGeneratora.WindGenerator, snagaServis)
             };
+            _timerServis = new TimerServis(obnovljiviIzvori);
         }
         public double PosaljiZahtev(double potrosnja, Consumer consumer)
         {

@@ -4,7 +4,6 @@ using Presentation.Ispisi;
 using Presentation.Izbor;
 using Presentation.Meni;
 using Services.RepozitorijumServisi;
-using System.Timers;
 
 namespace Application
 {
@@ -12,13 +11,8 @@ namespace Application
     {
         static void Main(string[] args)
         {
-            //var consumer = new Consumer();
             GenericRepository<Consumer> userRepository = new GenericRepository<Consumer>();
-            IRepository<Uredjaji> deviceRepository = new GenericRepository<Uredjaji>();
 
-            //ovo ce biti prebaceno u prezentaciju{
-
-            //opcija add consumer
             string name;
             do
             {
@@ -39,11 +33,6 @@ namespace Application
             }
             userRepository.Add( korisnik );
 
-            //opcija add uredjaj, moguce dodavanje vise uredjaja
-
-
-
-            //opcija prikazi uredjaje za korisnika
             IspisMenija meni = new IspisMenija(korisnik, userRepository);
             meni.PrikaziMeni();
             
