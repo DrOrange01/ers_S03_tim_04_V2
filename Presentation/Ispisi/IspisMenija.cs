@@ -72,12 +72,14 @@ namespace Presentation.Meni
                                 double cena = _distributionCenter.PosaljiZahtev(_consumer.UkupnaPotrosnja, _consumer);
                                 Console.WriteLine($"Vasa potrosnja je: {_consumer.UkupnaPotrosnja}, i to ce vas kostati: {cena}");
                                 PorukaUDatoteci poruka = new UredjajPoruka(DateTime.Now, uredjajj.Naziv,_consumer.Name, uredjajj.Ukljucen);
-                                _logger.Loguj(poruka.ToString());
-                                break;
+                                _logger.Loguj(poruka.ToString()?? "");
+                                goto EndOfCase;
                             }
                         }
                         Console.WriteLine($"Uredjaj {ukljucenUredjaj} ne postoji");
-                        break;
+                        goto EndOfCase;
+                        EndOfCase:
+                            break;
                     case '3':
                         string uredjaj;
                         do

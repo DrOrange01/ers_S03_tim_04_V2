@@ -18,7 +18,7 @@ namespace Domain.Modeli
         }
         public override string? ToString()
         {
-            return $"Vreme dogadjaja: {Vreme.ToString("dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture)}\n\n";
+            return $"{Vreme.ToString("dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture)}";
         }
     }
 }

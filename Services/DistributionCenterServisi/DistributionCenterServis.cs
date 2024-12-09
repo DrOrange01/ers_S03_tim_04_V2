@@ -19,6 +19,7 @@ namespace Services.DistributionCenterServisi
         private readonly List<SolarPanelsAndWindGeneratorsServis> obnovljiviIzvori;
         ObnovljiviIzvoriServis snagaServis = new ObnovljiviIzvoriServis();
         ILogServis _logger = new FileLoggerServis("DistributionCenterLog.txt");
+        ILogServis _loggerBaza = new FileLoggerServis("Baza.json");
         TimerServis _timerServis;
 
         public DistributionCenterServis()
@@ -44,7 +45,10 @@ namespace Services.DistributionCenterServisi
             hydroServis = new HydroelectricPowerPlantServis(hydroProizvodnja);
             cena = obnovljivaProizvodnjaUkupno * 5 + hydroProizvodnja * 10;
             PorukaUDatoteci poruka = new EnergijaPoruka(DateTime.Now, potrosnja, hydroProizvodnja);
-            _logger.Loguj(poruka.ToString());
+            _logger.Loguj(poruka.ToString()?? "");
+            double procenat = hydroProizvodnja / potrosnja * 100;
+            PorukaUDatoteci porukaSnaga = new SnagaPoruka(DateTime.Now, procenat, TipGeneratora.HydroelectricPowerPlant);
+            _loggerBaza.Loguj(porukaSnaga.ToString()?? "");
             return cena;
         }
     }

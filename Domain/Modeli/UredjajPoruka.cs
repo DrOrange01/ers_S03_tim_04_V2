@@ -22,9 +22,9 @@ namespace Domain.Modeli
         {
             if (Ukljucio)
             {
-                return $"Korisnik {Korisnik} je ukljucio uredjaj {Naziv}\n" + base.ToString();
+                return $"Korisnik {Korisnik} je ukljucio uredjaj {Naziv}\nVreme dogadjaja: " + base.ToString() + "\n";
             }
-            return $"Korisnik {Korisnik} je iskljucio uredjaj {Naziv}\n" + base.ToString();
+            return $"Korisnik {Korisnik} je iskljucio uredjaj {Naziv}\nVreme dogadjaja" + base.ToString()+"\n";
         }
     }
 }

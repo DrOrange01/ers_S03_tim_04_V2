@@ -19,7 +19,7 @@ namespace Domain.Modeli
         }
         public override string? ToString()
         {
-            return $"Korisnik je trazio {Potraznja}kW elektricne energije\nProizvodnja hidroelektrane je postavljena na {PotraznjaOdElektrane}\n" + base.ToString();
+            return $"Korisnik je trazio {Potraznja}kW elektricne energije\nProizvodnja hidroelektrane je postavljena na {PotraznjaOdElektrane}\nVreme dogadjaja: " + base.ToString() +"\n";
         }
     }
 }

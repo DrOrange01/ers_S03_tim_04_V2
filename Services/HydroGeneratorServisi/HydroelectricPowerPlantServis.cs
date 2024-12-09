@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Modeli;
 using Domain.Servisi;
+using Services.LoggerServisi;
 
 namespace Services.HydroGeneratorServisi
 {
