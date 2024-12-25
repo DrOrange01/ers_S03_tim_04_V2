@@ -11,3 +11,6 @@
 /Application/obj
 /Presentation/bin/Debug/net8.0
 /Presentation/obj
+/Tests/bin/Debug/net8.0/Application.deps.json
+/Tests/bin/Debug/net8.0
+/Tests/obj
