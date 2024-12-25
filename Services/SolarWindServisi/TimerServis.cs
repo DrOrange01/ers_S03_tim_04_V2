@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Servisi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,8 @@ namespace Services.SolarWindServisi
     public class TimerServis
     {
         private static System.Timers.Timer? _timer;
-        public List<SolarPanelsAndWindGeneratorsServis> _panels;
-        public TimerServis(List<SolarPanelsAndWindGeneratorsServis> panels)
+        public List<IPowerGeneratorServis> _panels;
+        public TimerServis(List<IPowerGeneratorServis> panels)
         {
 
             _timer = new System.Timers.Timer(10000); 

@@ -15,6 +15,10 @@ namespace Services.UredjajServisi
             {
                 if (uredjaj.Naziv.ToLower().Equals(naziv.ToLower()))
                 {
+                    if (uredjaj.Ukljucen)
+                    {
+                        consumer.UkupnaPotrosnja -= uredjaj.Potrosnja;
+                    }
                     consumer.uredjaji.Remove(uredjaj);
                     return true;
                 }

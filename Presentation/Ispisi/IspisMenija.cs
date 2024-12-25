@@ -45,12 +45,14 @@ namespace Presentation.Meni
                 switch (opcija[0])
                 {
                     case '1':
+                        Console.Clear();
                         Console.WriteLine($"User: {_consumer.Name}");
                         ispis.PrikaziUredjaje();
                         break;
                     case '2':
                         Console.WriteLine("Izaberite uredjaj koji zelite da ukljucite/iskljucite: ");
                         string ukljucenUredjaj = Console.ReadLine() ?? "";
+                        Console.Clear();
                         foreach (var uredjajj in _consumer.uredjaji)
                         {
                             if(uredjajj.Naziv.ToLower().Equals(ukljucenUredjaj.ToLower()))
@@ -71,6 +73,7 @@ namespace Presentation.Meni
                                 }
                                 double cena = _distributionCenter.PosaljiZahtev(_consumer.UkupnaPotrosnja, _consumer);
                                 Console.WriteLine($"Vasa potrosnja je: {_consumer.UkupnaPotrosnja}, i to ce vas kostati: {cena}");
+                                
                                 PorukaUDatoteci poruka = new UredjajPoruka(DateTime.Now, uredjajj.Naziv,_consumer.Name, uredjajj.Ukljucen);
                                 _logger.Loguj(poruka.ToString()?? "");
                                 goto EndOfCase;
@@ -81,6 +84,7 @@ namespace Presentation.Meni
                         EndOfCase:
                             break;
                     case '3':
+                        Console.Clear();
                         string uredjaj;
                         do
                         {
@@ -99,17 +103,20 @@ namespace Presentation.Meni
                     case '4':
                         Console.WriteLine("Izaberite uredjaj koji zelite da izbrisete: ");
                         string naziv = Console.ReadLine() ?? "";
-                        if(_obrisiUredjaj.ObrisiUredjaj(_consumer, naziv))
+                        Console.Clear();
+                        if (_obrisiUredjaj.ObrisiUredjaj(_consumer, naziv))
                         {
                             Console.WriteLine($"Uredjaj {naziv} je uspesno obrisan");
                         }
                         break;
                     case '5':
+                        Console.Clear();
                         _userRepository.Delete(_consumer.Id);
                         Console.WriteLine("Uspesno ste izbrisali svoj nalog!");
                         kraj = true;
                         break;
                     case '6':
+                        Console.Clear();
                         Console.WriteLine("Uspesno ste se odjavili!");
                         kraj = true;
                         break;

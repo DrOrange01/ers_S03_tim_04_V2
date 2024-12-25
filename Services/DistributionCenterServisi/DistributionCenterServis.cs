@@ -16,7 +16,7 @@ namespace Services.DistributionCenterServisi
     public class DistributionCenterServis : IDistributionCenterServis
     {
         private HydroelectricPowerPlantServis? hydroServis;
-        private readonly List<SolarPanelsAndWindGeneratorsServis> obnovljiviIzvori;
+        private readonly List<IPowerGeneratorServis> obnovljiviIzvori;
         ObnovljiviIzvoriServis snagaServis = new ObnovljiviIzvoriServis();
         ILogServis _logger = new FileLoggerServis("DistributionCenterLog.txt");
         ILogServis _loggerBaza = new FileLoggerServis("Baza.json");
@@ -25,31 +25,41 @@ namespace Services.DistributionCenterServisi
         public DistributionCenterServis()
         {
             
-            obnovljiviIzvori = new List<SolarPanelsAndWindGeneratorsServis>
+            obnovljiviIzvori = new List<IPowerGeneratorServis>
             {
                 new SolarPanelsAndWindGeneratorsServis(TipGeneratora.SolarPanel, snagaServis),
                 new SolarPanelsAndWindGeneratorsServis(TipGeneratora.WindGenerator, snagaServis)
             };
             _timerServis = new TimerServis(obnovljiviIzvori);
         }
+        public DistributionCenterServis(List<IPowerGeneratorServis> obnovljiviIzvori)
+        {
+            this.obnovljiviIzvori = obnovljiviIzvori;
+            _timerServis = new TimerServis(obnovljiviIzvori);
+        }
         public double PosaljiZahtev(double potrosnja, Consumer consumer)
         {
-            double obnovljivaProizvodnjaUkupno = 0;
-            double hydroProizvodnja = 0;
-            double cena = 0;
-            foreach (var izvor in obnovljiviIzvori)
+            if (potrosnja < 0)
+                return -1;
+            else if (potrosnja == 0)
+                return 0;
+            else
             {
-                obnovljivaProizvodnjaUkupno += izvor.GetProizvodnja();
+                double obnovljivaProizvodnjaUkupno = Math.Min(obnovljiviIzvori.Sum(izvor => izvor.GetProizvodnja()),potrosnja);
+                
+                double hydroProizvodnja = Math.Max(potrosnja - obnovljivaProizvodnjaUkupno, 0);
+                double cena = obnovljivaProizvodnjaUkupno * 5 + hydroProizvodnja * 10;
+
+                hydroServis = new HydroelectricPowerPlantServis(hydroProizvodnja);
+
+                PorukaUDatoteci poruka = new EnergijaPoruka(DateTime.Now, potrosnja, hydroProizvodnja);
+                _logger.Loguj(poruka.ToString() ?? "");
+
+                double procenat = hydroProizvodnja / potrosnja * 100;
+                PorukaUDatoteci porukaSnaga = new SnagaPoruka(DateTime.Now, procenat, TipGeneratora.HydroelectricPowerPlant);
+                _loggerBaza.Loguj(porukaSnaga.ToString() ?? "");
+                return cena;
             }
-            hydroProizvodnja = potrosnja - obnovljivaProizvodnjaUkupno;
-            hydroServis = new HydroelectricPowerPlantServis(hydroProizvodnja);
-            cena = obnovljivaProizvodnjaUkupno * 5 + hydroProizvodnja * 10;
-            PorukaUDatoteci poruka = new EnergijaPoruka(DateTime.Now, potrosnja, hydroProizvodnja);
-            _logger.Loguj(poruka.ToString()?? "");
-            double procenat = hydroProizvodnja / potrosnja * 100;
-            PorukaUDatoteci porukaSnaga = new SnagaPoruka(DateTime.Now, procenat, TipGeneratora.HydroelectricPowerPlant);
-            _loggerBaza.Loguj(porukaSnaga.ToString()?? "");
-            return cena;
         }
     }
 }
