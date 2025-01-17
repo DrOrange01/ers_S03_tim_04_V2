@@ -108,7 +108,11 @@ namespace Presentation.Meni
                         {
                             Console.WriteLine($"Uredjaj {naziv} je uspesno obrisan");
                         }
-                        break;
+                        else
+                        {
+                            Console.WriteLine($"Uredjaj {naziv} ne postoji");
+                        }
+                            break;
                     case '5':
                         Console.Clear();
                         _userRepository.Delete(_consumer.Id);

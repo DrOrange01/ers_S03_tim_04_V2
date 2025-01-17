@@ -25,6 +25,8 @@ namespace Services.HydroGeneratorServisi
             {
                 hydro = new HydroelectricPowerPlant(potraznja);
             }
+            else
+                hydro = new HydroelectricPowerPlant(0);
         }
 
         public double GetProizvodnja() => hydro.trenutnaProizvodnja;

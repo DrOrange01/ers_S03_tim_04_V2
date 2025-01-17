@@ -14,7 +14,7 @@ namespace Services.SolarWindServisi
         private readonly SolarPanelsAndWindGenerators _generator;
         private readonly ISnagaServis _snagaServis;
         
-        public SolarPanelsAndWindGeneratorsServis(TipGeneratora tip, ObnovljiviIzvoriServis snagaServis)
+        public SolarPanelsAndWindGeneratorsServis(TipGeneratora tip, ISnagaServis snagaServis)
         {
             _snagaServis = snagaServis ?? throw new ArgumentNullException(nameof(snagaServis));
             _generator = new SolarPanelsAndWindGenerators(tip, 0, 0);

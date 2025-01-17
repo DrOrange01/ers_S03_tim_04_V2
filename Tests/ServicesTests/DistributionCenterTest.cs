@@ -1,13 +1,11 @@
-﻿
-using Domain.Modeli;
+﻿using Domain.Modeli;
 using Domain.Servisi;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using Services.DistributionCenterServisi;
 using Services.SolarWindServisi;
 
-namespace Tests
+namespace Tests.ServicesTests
 {
     [TestFixture]
     public class DistributionCenterTest
@@ -28,6 +26,7 @@ namespace Tests
             // Kreiranje instance DistributionCenterServis
             _distributionCenterServis = new DistributionCenterServis();
         }
+
         [Test]
         public void PosaljiZahtevTest()
         {
@@ -48,11 +47,17 @@ namespace Tests
 
             var distributionCenterServis = new DistributionCenterServis(obnovljiviIzvoriMock);
 
-            // Act
             var result = distributionCenterServis.PosaljiZahtev(potrosnja, consumer);
 
-            // Assert
-            Assert.Equals(550, result); // (40+30)*5 + (100-70)*10
+            Assert.AreEqual(650, result);
+
+            potrosnja = 0;
+            result = distributionCenterServis.PosaljiZahtev(potrosnja, consumer);
+            Assert.AreEqual(0, result);
+
+            potrosnja = -100;
+            result = distributionCenterServis.PosaljiZahtev(potrosnja, consumer);
+            Assert.AreEqual(-1, result);
         }
     }
 }
