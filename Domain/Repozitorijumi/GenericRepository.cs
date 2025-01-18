@@ -11,6 +11,15 @@ namespace Services.RepozitorijumServisi
     {
         private readonly List<T> _entities = new();
 
+        public GenericRepository()
+        {
+            _entities = new List<T>();
+        }
+        public GenericRepository(IRepository<T> repo)
+        {
+            _entities = repo.GetAll();
+        }
+
         public T GetById(Guid id)
         {
             var entity = _entities.FirstOrDefault(e => e.Id == id);
